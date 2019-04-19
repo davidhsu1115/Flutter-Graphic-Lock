@@ -51,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Color nodeColor9 = Colors.white;
   var dx;
   var dy;
+  List<Offset> _connectedNode = <Offset>[];
 
   void isPointInside(Offset point, double radius) {
     coordinateData.forEach((key, value) {
@@ -62,54 +63,127 @@ class _MyHomePageState extends State<MyHomePage> {
         if (key == 1) {
           setState(() {
             nodeColor1 = Colors.yellow;
+            _connectedNode.add(coordinateData[1]);
           });
         }
 
         if (key == 2) {
           setState(() {
             nodeColor2 = Colors.yellow;
+            _connectedNode.add(coordinateData[2]);
           });
         }
 
         if (key == 3) {
           setState(() {
             nodeColor3 = Colors.yellow;
+            _connectedNode.add(coordinateData[3]);
           });
         }
 
         if (key == 4) {
           setState(() {
             nodeColor4 = Colors.yellow;
+            _connectedNode.add(coordinateData[4]);
           });
         }
 
         if (key == 5) {
           setState(() {
             nodeColor5 = Colors.yellow;
+            _connectedNode.add(coordinateData[5]);
           });
         }
 
         if (key == 6) {
           setState(() {
             nodeColor6 = Colors.yellow;
+            _connectedNode.add(coordinateData[6]);
           });
         }
 
         if (key == 7) {
           setState(() {
             nodeColor7 = Colors.yellow;
+            _connectedNode.add(coordinateData[7]);
           });
         }
 
         if (key == 8) {
           setState(() {
             nodeColor8 = Colors.yellow;
+            _connectedNode.add(coordinateData[8]);
           });
         }
 
         if (key == 9) {
           setState(() {
             nodeColor9 = Colors.yellow;
+            _connectedNode.add(coordinateData[9]);
+          });
+        }
+      }
+    });
+  }
+
+  void panDownNodeCheck(Offset point, double radius) {
+    coordinateData.forEach((key, value) {
+      var distance =
+          sqrt(pow(value.dx - point.dx, 2) + pow((value.dy - point.dy), 2));
+      //return distance <= radius;
+
+      if (distance <= radius) {
+        if (key == 1) {
+          setState(() {
+            _connectedNode.add(coordinateData[1]);
+          });
+        }
+
+        if (key == 2) {
+          setState(() {
+            _connectedNode.add(coordinateData[2]);
+          });
+        }
+
+        if (key == 3) {
+          setState(() {
+            _connectedNode.add(coordinateData[3]);
+          });
+        }
+
+        if (key == 4) {
+          setState(() {
+            _connectedNode.add(coordinateData[4]);
+          });
+        }
+
+        if (key == 5) {
+          setState(() {
+            _connectedNode.add(coordinateData[5]);
+          });
+        }
+
+        if (key == 6) {
+          setState(() {
+            _connectedNode.add(coordinateData[6]);
+          });
+        }
+
+        if (key == 7) {
+          setState(() {
+            _connectedNode.add(coordinateData[7]);
+          });
+        }
+
+        if (key == 8) {
+          setState(() {
+            _connectedNode.add(coordinateData[8]);
+          });
+        }
+
+        if (key == 9) {
+          setState(() {
+            _connectedNode.add(coordinateData[9]);
           });
         }
       }
@@ -137,6 +211,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     print('down $detail');
                     dx = detail.globalPosition.dx;
                     dy = detail.globalPosition.dy;
+                    panDownNodeCheck(
+                        detail.globalPosition, screenWidth * 0.07 / 2);
                   },
                   onPanUpdate: (DragUpdateDetails detail) {
                     print(
@@ -150,90 +226,100 @@ class _MyHomePageState extends State<MyHomePage> {
                     print('end $detail');
                   },
                   onPanCancel: () {
-                    print('canceled');
+                    if (_connectedNode.length < 6) {
+                      setState(() {
+                        _connectedNode.clear();
+                      });
+                    }
                   },
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        top: screenWidth * 0.05, bottom: screenWidth * 0.05),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(
-                              left: screenWidth * 0.05,
-                              right: screenWidth * 0.05),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              ConnectionNode(
-                                nodeIndex: 1,
-                                coordinateData: coordinateData,
-                                widgetColor: nodeColor1,
-                              ),
-                              ConnectionNode(
-                                nodeIndex: 2,
-                                coordinateData: coordinateData,
-                                widgetColor: nodeColor2,
-                              ),
-                              ConnectionNode(
-                                nodeIndex: 3,
-                                coordinateData: coordinateData,
-                                widgetColor: nodeColor3,
-                              )
-                            ],
+                  child: CustomPaint(
+                    painter: new NodePathPainter(
+                        points: _connectedNode,
+                        screenHeight: screenHeight,
+                        screenWidth: screenWidth),
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          top: screenWidth * 0.05, bottom: screenWidth * 0.05),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(
+                                left: screenWidth * 0.05,
+                                right: screenWidth * 0.05),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                ConnectionNode(
+                                  nodeIndex: 1,
+                                  coordinateData: coordinateData,
+                                  widgetColor: nodeColor1,
+                                ),
+                                ConnectionNode(
+                                  nodeIndex: 2,
+                                  coordinateData: coordinateData,
+                                  widgetColor: nodeColor2,
+                                ),
+                                ConnectionNode(
+                                  nodeIndex: 3,
+                                  coordinateData: coordinateData,
+                                  widgetColor: nodeColor3,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                              left: screenWidth * 0.05,
-                              right: screenWidth * 0.05),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              ConnectionNode(
-                                nodeIndex: 4,
-                                coordinateData: coordinateData,
-                                widgetColor: nodeColor4,
-                              ),
-                              ConnectionNode(
-                                nodeIndex: 5,
-                                coordinateData: coordinateData,
-                                widgetColor: nodeColor5,
-                              ),
-                              ConnectionNode(
-                                nodeIndex: 6,
-                                coordinateData: coordinateData,
-                                widgetColor: nodeColor6,
-                              )
-                            ],
+                          Container(
+                            padding: EdgeInsets.only(
+                                left: screenWidth * 0.05,
+                                right: screenWidth * 0.05),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                ConnectionNode(
+                                  nodeIndex: 4,
+                                  coordinateData: coordinateData,
+                                  widgetColor: nodeColor4,
+                                ),
+                                ConnectionNode(
+                                  nodeIndex: 5,
+                                  coordinateData: coordinateData,
+                                  widgetColor: nodeColor5,
+                                ),
+                                ConnectionNode(
+                                  nodeIndex: 6,
+                                  coordinateData: coordinateData,
+                                  widgetColor: nodeColor6,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                              left: screenWidth * 0.05,
-                              right: screenWidth * 0.05),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              ConnectionNode(
-                                nodeIndex: 7,
-                                coordinateData: coordinateData,
-                                widgetColor: nodeColor7,
-                              ),
-                              ConnectionNode(
-                                nodeIndex: 8,
-                                coordinateData: coordinateData,
-                                widgetColor: nodeColor8,
-                              ),
-                              ConnectionNode(
-                                nodeIndex: 9,
-                                coordinateData: coordinateData,
-                                widgetColor: nodeColor9,
-                              )
-                            ],
+                          Container(
+                            padding: EdgeInsets.only(
+                                left: screenWidth * 0.05,
+                                right: screenWidth * 0.05),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                ConnectionNode(
+                                  nodeIndex: 7,
+                                  coordinateData: coordinateData,
+                                  widgetColor: nodeColor7,
+                                ),
+                                ConnectionNode(
+                                  nodeIndex: 8,
+                                  coordinateData: coordinateData,
+                                  widgetColor: nodeColor8,
+                                ),
+                                ConnectionNode(
+                                  nodeIndex: 9,
+                                  coordinateData: coordinateData,
+                                  widgetColor: nodeColor9,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 )),
@@ -287,4 +373,37 @@ class _ConnectionNodeState extends State<ConnectionNode> with AfterLayoutMixin {
       ),
     );
   }
+}
+
+class NodePathPainter extends CustomPainter {
+  List<Offset> points;
+  final screenWidth;
+  final screenHeight;
+
+  NodePathPainter({this.points, this.screenHeight, this.screenWidth});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = new Paint()
+      ..color = Colors.blue
+      ..strokeCap = StrokeCap.square
+      ..strokeWidth = 5.0;
+
+    for (int i = 0; i < points.length - 1; i++) {
+      if (points[i] != null && points[i + 1] != null) {
+        var adx = points[i].dx - screenWidth * 0.1;
+        var ady = points[i].dy - screenWidth * 0.8;
+        Offset adjustPoint = Offset(adx, ady);
+
+        var adx1 = points[i + 1].dx - screenWidth * 0.1;
+        var ady1 = points[i + 1].dy - screenWidth * 0.8;
+        Offset adjustPoint1 = Offset(adx1, ady1);
+        canvas.drawLine(adjustPoint, adjustPoint1, paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(NodePathPainter oldDelegate) =>
+      oldDelegate.points != points;
 }
