@@ -52,6 +52,17 @@ class _MyHomePageState extends State<MyHomePage> {
   var dx;
   var dy;
   List<Offset> _connectedNode = <Offset>[];
+  Map<int, bool> nodePassed = {
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false,
+    6: false,
+    7: false,
+    8: false,
+    9: false
+  };
 
   void isPointInside(Offset point, double radius) {
     coordinateData.forEach((key, value) {
@@ -64,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             nodeColor1 = Colors.yellow;
             _connectedNode.add(coordinateData[1]);
+            nodePassed[1] = true;
           });
         }
 
@@ -71,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             nodeColor2 = Colors.yellow;
             _connectedNode.add(coordinateData[2]);
+            nodePassed[2] = true;
           });
         }
 
@@ -78,6 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             nodeColor3 = Colors.yellow;
             _connectedNode.add(coordinateData[3]);
+            nodePassed[3] = true;
           });
         }
 
@@ -85,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             nodeColor4 = Colors.yellow;
             _connectedNode.add(coordinateData[4]);
+            nodePassed[4] = true;
           });
         }
 
@@ -92,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             nodeColor5 = Colors.yellow;
             _connectedNode.add(coordinateData[5]);
+            nodePassed[5] = true;
           });
         }
 
@@ -99,6 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             nodeColor6 = Colors.yellow;
             _connectedNode.add(coordinateData[6]);
+            nodePassed[6] = true;
           });
         }
 
@@ -106,6 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             nodeColor7 = Colors.yellow;
             _connectedNode.add(coordinateData[7]);
+            nodePassed[7] = true;
           });
         }
 
@@ -113,6 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             nodeColor8 = Colors.yellow;
             _connectedNode.add(coordinateData[8]);
+            nodePassed[8] = true;
           });
         }
 
@@ -120,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             nodeColor9 = Colors.yellow;
             _connectedNode.add(coordinateData[9]);
+            nodePassed[9] = true;
           });
         }
       }
@@ -136,54 +156,63 @@ class _MyHomePageState extends State<MyHomePage> {
         if (key == 1) {
           setState(() {
             _connectedNode.add(coordinateData[1]);
+            nodePassed[1] = true;
           });
         }
 
         if (key == 2) {
           setState(() {
             _connectedNode.add(coordinateData[2]);
+            nodePassed[2] = true;
           });
         }
 
         if (key == 3) {
           setState(() {
             _connectedNode.add(coordinateData[3]);
+            nodePassed[3] = true;
           });
         }
 
         if (key == 4) {
           setState(() {
             _connectedNode.add(coordinateData[4]);
+            nodePassed[4] = true;
           });
         }
 
         if (key == 5) {
           setState(() {
             _connectedNode.add(coordinateData[5]);
+            nodePassed[5] = true;
           });
         }
 
         if (key == 6) {
           setState(() {
             _connectedNode.add(coordinateData[6]);
+            nodePassed[6] = true;
           });
         }
 
         if (key == 7) {
           setState(() {
             _connectedNode.add(coordinateData[7]);
+            nodePassed[7] = true;
           });
         }
 
         if (key == 8) {
           setState(() {
             _connectedNode.add(coordinateData[8]);
+            nodePassed[8] = true;
           });
         }
 
         if (key == 9) {
           setState(() {
             _connectedNode.add(coordinateData[9]);
+            nodePassed[9] = true;
           });
         }
       }
@@ -224,14 +253,43 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   onPanEnd: (DragEndDetails detail) {
                     print('end $detail');
-                  },
-                  onPanCancel: () {
-                    if (_connectedNode.length < 6) {
+                    print(nodePassed);
+                    var passedCount = 0;
+                    nodePassed.forEach((key, value) {
+                      if (nodePassed[key] == true) {
+                        passedCount++;
+                      }
+                    });
+                    if (passedCount < 6) {
+                      // ! If the connected node is less than 6, clear all path.
                       setState(() {
-                        _connectedNode.clear();
+                        _connectedNode = [];
+
+                        nodeColor1 = Colors.white;
+                        nodeColor2 = Colors.white;
+                        nodeColor3 = Colors.white;
+                        nodeColor4 = Colors.white;
+                        nodeColor5 = Colors.white;
+                        nodeColor6 = Colors.white;
+                        nodeColor7 = Colors.white;
+                        nodeColor8 = Colors.white;
+                        nodeColor9 = Colors.white;
+
+                        nodePassed = {
+                          1: false,
+                          2: false,
+                          3: false,
+                          4: false,
+                          5: false,
+                          6: false,
+                          7: false,
+                          8: false,
+                          9: false
+                        };
                       });
                     }
                   },
+                  onPanCancel: () {},
                   child: CustomPaint(
                     painter: new NodePathPainter(
                         points: _connectedNode,
@@ -405,5 +463,5 @@ class NodePathPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(NodePathPainter oldDelegate) =>
-      oldDelegate.points != points;
+      oldDelegate.points != points || points == null;
 }
